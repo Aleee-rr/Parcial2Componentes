@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Parcial2Componentes</string>
+    <string name="title_activity_plans_list_screen">PlansListScreen</string>
+    <string name="title_activity_app_navigation">AppNavigation</string>
 </resources>
