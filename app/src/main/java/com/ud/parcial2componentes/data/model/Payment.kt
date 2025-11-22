@@ -1,9 +1,16 @@
 package com.ud.parcial2componentes.data.model
 
+import com.google.gson.annotations.SerializedName
+
+/**
+ * Representa un pago registrado en el sistema.
+ */
 data class Payment(
-    val _id: String? = null,
+    @SerializedName("_id")
+    val id: String,
+
+    val memberId: String,
     val planId: String,
-    val memberId: String? = null,
-    val amount: Long,
+    val amount: Double,
     val date: String
 )

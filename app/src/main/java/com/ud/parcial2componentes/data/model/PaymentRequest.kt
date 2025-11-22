@@ -1,4 +1,10 @@
 package com.ud.parcial2componentes.data.model
 
-class PaymentRequest {
-}
+/**
+ * DTO para enviar un nuevo pago al backend.
+ */
+data class PaymentRequest(
+    val memberId: String,
+    val planId: String,
+    val amount: Double
+)
