@@ -7,10 +7,11 @@ import com.google.gson.annotations.SerializedName
  */
 data class Member(
     @SerializedName("_id")
-    val id: String,
+    val id: String = "",  // ← Ahora es opcional
 
     val name: String,
     val planId: String,
     val contributionPerMonth: Double,
-    val joinedAt: String
+
+    val joinedAt: String = ""  // ← Ahora es opcional
 )

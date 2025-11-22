@@ -8,13 +8,14 @@ import com.google.gson.annotations.SerializedName
  */
 data class Plan(
     @SerializedName("_id")
-    val id: String,
+    val id: String = "",  // Ahora es opcional
 
     val name: String,
     val motive: String,
     val targetAmount: Double,
     val months: Int,
-    val createdAt: String
+
+    val createdAt: String = ""  // ← Ahora es opcional
 ) {
     /**
      * Calcula el progreso del plan basado en los pagos totales recibidos.

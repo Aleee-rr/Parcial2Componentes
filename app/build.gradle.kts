@@ -6,9 +6,7 @@ plugins {
 
 android {
     namespace = "com.ud.parcial2componentes"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.ud.parcial2componentes"
@@ -73,6 +71,7 @@ dependencies {
 
     //Cortinas
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
 
     // Testing
     testImplementation("junit:junit:4.13.2")
