@@ -23,8 +23,26 @@ import com.ud.parcial2componentes.viewmodel.PlanDetailUiState
 import com.ud.parcial2componentes.viewmodel.PlanDetailViewModel
 
 /**
- * Pantalla de detalle de un plan con diseño moderno.
+ * Esta pantalla muestra el detalle completo de un plan de ahorro específico con un diseño moderno.
+ * Utiliza un Scaffold con un TopAppBar que incluye un botón de retroceso. Según el estado del ViewModel
+ * (PlanDetailViewModel), puede mostrar un indicador de carga, un mensaje de error con opción de reintentar
+ * o el contenido completo del plan. El contenido se organiza en un LazyColumn que incluye:
+ *
+ * 1. Header del plan con gradiente que muestra nombre, motivo y duración.
+ * 2. ModernProgressCard que visualiza el progreso del plan con una barra de progreso y monto recaudado.
+ * 3. Botón para registrar un nuevo pago, llamando a la función onRegisterPayment.
+ * 4. Sección de miembros, mostrando ModernMemberCard para cada miembro registrado, incluyendo avatar inicial,
+ *    nombre y aporte mensual; si no hay miembros, se muestra un EmptySection.
+ * 5. Sección de pagos recientes, mostrando CompactPaymentCard para cada pago; si no hay pagos, también se
+ *    muestra un EmptySection.
+ *
+ * Las tarjetas y secciones utilizan esquinas redondeadas, gradientes y colores del tema para un diseño
+ * moderno y atractivo. Los pagos se muestran con formato de fecha legible usando la función formatPaymentDate
+ * y los montos con formato numérico. En conjunto, este Composable centraliza toda la información relevante
+ * de un plan, incluyendo progreso, miembros y pagos, y permite la interacción del usuario para registrar pagos,
+ * manteniendo la UI coherente con el estado del ViewModel y ofreciendo un diseño visual agradable y funcional.
  */
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlanDetailScreen(

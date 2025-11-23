@@ -23,8 +23,34 @@ import com.ud.parcial2componentes.viewmodel.PlansUiState
 import com.ud.parcial2componentes.viewmodel.PlansViewModel
 
 /**
- * Pantalla principal con diseño moderno inspirado en UI/UX contemporáneo.
+ * Pantalla principal que muestra la lista de planes de ahorro disponibles.
+ *
+ * Utiliza un Scaffold con:
+ * - TopAppBar: muestra el título "Planes de Ahorro".
+ * - FloatingActionButton: permite crear un nuevo plan.
+ *
+ * La UI responde al estado del ViewModel (`PlansViewModel`):
+ * - `Loading`: muestra un CircularProgressIndicator centrado.
+ * - `Empty`: muestra `EmptyStateModern` invitando a crear un nuevo plan o reintentar la carga.
+ * - `Success`: muestra la lista de planes mediante `ModernPlansList`.
+ * - `Error`: muestra un mensaje de error con opción de reintentar (`ErrorState`).
+ *
+ * La lista de planes (`ModernPlansList`) incluye:
+ * - Botón de refrescar planes con estilo moderno.
+ * - Cada plan se muestra usando `ModernPlanCard`, que incluye:
+ *   - Barra superior con gradiente.
+ *   - Nombre y motivo del plan.
+ *   - Meta y duración en tarjetas con colores del tema.
+ *
+ * `EmptyStateModern` y `ErrorState` son composables reutilizables para mostrar estados vacíos o de error
+ * con iconos, textos y botones interactivos.
+ *
+ * Diseño moderno:
+ * - Esquinas redondeadas en tarjetas y botones.
+ * - Gradientes horizontales en barras de progreso y encabezados.
+ * - Uso consistente de colores del `MaterialTheme` para mantener coherencia visual.
  */
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlansListScreen(

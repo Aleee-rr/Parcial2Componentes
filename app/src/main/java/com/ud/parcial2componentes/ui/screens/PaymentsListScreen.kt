@@ -22,9 +22,19 @@ import com.ud.parcial2componentes.viewmodel.PlanDetailUiState
 import com.ud.parcial2componentes.viewmodel.PlanDetailViewModel
 
 /**
- * Pantalla que muestra todos los pagos de un plan específico.
- * Ahora con diseño moderno y mostrando el nombre del miembro.
+ * Esta pantalla muestra el historial de pagos de un plan específico. Utiliza un Scaffold con un TopAppBar
+ * que incluye un botón de retroceso. El contenido se actualiza según el estado del ViewModel (PlanDetailViewModel):
+ * mientras se cargan los datos muestra un indicador de progreso, si ocurre un error se muestra un mensaje con
+ * opción de reintentar, y si la carga es exitosa se despliega la lista de pagos. Cada pago se representa mediante
+ * un ModernPaymentCard, que muestra información del miembro que realizó el pago, la fecha del pago y el monto,
+ * con un diseño moderno que incluye gradientes y tarjetas con esquinas redondeadas. Si no hay pagos, se muestra
+ * un mensaje indicando que no hay pagos registrados. La pantalla utiliza LazyColumn para listar los pagos y
+ * asegura que siempre estén ordenados de manera descendente por fecha. Además, se incluye la función formatPaymentDate
+ * para convertir fechas en formato ISO 8601 a un formato más legible (ej. "16 Nov 2025"). En conjunto, este Composable
+ * centraliza la visualización del historial de pagos de un plan, mostrando información relevante de manera clara
+ * y con un diseño atractivo, integrándose con el estado del ViewModel para manejar carga, errores y datos dinámicos.
  */
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PaymentsListScreen(

@@ -20,9 +20,21 @@ import com.ud.parcial2componentes.viewmodel.CreatePlanState
 import com.ud.parcial2componentes.viewmodel.CreatePlanViewModel
 
 /**
- * Pantalla para crear un nuevo plan de ahorro.
- * Permite agregar nombre, motivo, meta, duración y miembros.
+ * Esta pantalla permite crear un nuevo plan de ahorro dentro de la aplicación.
+ * El usuario puede ingresar información básica del plan como nombre, motivo, meta de ahorro y duración en meses,
+ * además de agregar miembros que participarán en el plan y sus aportes mensuales. La pantalla utiliza un Scaffold
+ * con un TopAppBar que incluye un botón de retroceso y un FloatingActionButton para agregar miembros. Los campos
+ * del plan se muestran con OutlinedTextField, validando que los valores no estén vacíos y que los números sean
+ * correctos. Los miembros se manejan mediante una lista dinámica y se muestran en tarjetas (MemberInputCard),
+ * donde cada miembro puede ser eliminado. Si no hay miembros agregados, se muestra un mensaje informativo.
+ * La creación del plan se realiza mediante un botón que llama al ViewModel (CreatePlanViewModel) para persistir
+ * los datos; mientras se procesa la creación, se muestra un indicador de carga. La pantalla también maneja estados
+ * de error mostrando un Card con el mensaje correspondiente. Para agregar un miembro, se despliega un dialogo
+ * (AddMemberDialog) donde se ingresan nombre y aporte mensual; al confirmar, se agrega a la lista de miembros.
+ * En conjunto, este Composable centraliza la captura de toda la información necesaria para crear un plan y su
+ * interacción con los miembros, integrándose con el ViewModel para manejar el estado y la lógica de negocio.
  */
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreatePlanScreen(

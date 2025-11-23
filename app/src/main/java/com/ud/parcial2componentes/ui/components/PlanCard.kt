@@ -9,7 +9,15 @@ import androidx.compose.ui.unit.dp
 import com.ud.parcial2componentes.data.model.Plan
 
 /**
- * Componente reutilizable para mostrar una card de plan.
+ * Componente visual que representa un [Plan] de ahorro en forma de card interactiva.
+ *
+ * Esta card muestra la siguiente información del plan:
+ * 1. **Nombre del plan**: resaltado en tipografía grande y negrita.
+ * 2. **Motivo**: descripción del objetivo o razón del plan.
+ * 3. **Meta financiera**: monto total a ahorrar, resaltado con color primario.
+ * 4. **Duración**: número de meses en los que se planea completar la meta.
+ *
+ * La card es **clickeable**, ejecutando el lambda [onClick] al pulsarla.
  */
 @Composable
 fun PlanCard(
@@ -27,6 +35,7 @@ fun PlanCard(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
+            // 1️ Nombre del plan
             Text(
                 text = plan.name,
                 style = MaterialTheme.typography.titleLarge,
@@ -34,12 +43,15 @@ fun PlanCard(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
+                // Motivo del plan
                 text = "Motivo: ${plan.motive}",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Spacer(modifier = Modifier.height(8.dp))
             Row(
+
+                //  Meta y Duración del plan
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {

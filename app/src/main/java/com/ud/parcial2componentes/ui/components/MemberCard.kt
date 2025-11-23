@@ -10,7 +10,10 @@ import androidx.compose.ui.unit.dp
 import com.ud.parcial2componentes.data.model.Member
 
 /**
- * Componente reutilizable para mostrar información de un miembro.
+ * Componente reutilizable que muestra información de un [Member].
+ *
+ * @param member El miembro cuyos datos se van a mostrar.
+ * @param modifier [Modifier] opcional para personalizar el layout del componente.
  */
 @Composable
 fun MemberCard(
@@ -28,11 +31,13 @@ fun MemberCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column {
+                // Nombre del miembro
                 Text(
                     text = member.name,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold
                 )
+                // Aporte mensual del miembro
                 Text(
                     text = "Aporte mensual: $${"%,.0f".format(member.contributionPerMonth)}",
                     style = MaterialTheme.typography.bodyMedium,

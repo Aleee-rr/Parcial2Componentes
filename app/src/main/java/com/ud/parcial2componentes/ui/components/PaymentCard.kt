@@ -9,7 +9,10 @@ import androidx.compose.ui.unit.dp
 import com.ud.parcial2componentes.data.model.Payment
 
 /**
- * Componente reutilizable para mostrar información de un pago.
+ * Componente reutilizable que muestra información de un [Payment].
+ *
+ * @param payment El pago cuyos datos se van a mostrar.
+ * @param modifier [Modifier] opcional para personalizar el layout del componente.
  */
 @Composable
 fun PaymentCard(
@@ -26,16 +29,20 @@ fun PaymentCard(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column {
+                // Etiqueta del pago
                 Text(
                     text = "Pago registrado",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+                // Fecha del pago (solo fecha, sin hora)
                 Text(
-                    text = payment.date.take(10), // Solo la fecha
+                    text = payment.date.take(10),
                     style = MaterialTheme.typography.bodySmall
                 )
             }
+
+            // Monto del pago
             Text(
                 text = "$${"%,.0f".format(payment.amount)}",
                 style = MaterialTheme.typography.titleMedium,

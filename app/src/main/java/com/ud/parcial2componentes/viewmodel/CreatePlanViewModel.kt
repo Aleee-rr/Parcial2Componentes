@@ -10,16 +10,34 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 /**
- * ViewModel para crear un nuevo plan.
- * Maneja la lógica de validación y creación del plan con sus miembros.
+ * ViewModel responsable de la creación de un nuevo plan de ahorro.
+ *
+ * - Maneja la lógica de validación de datos del plan.
+ * - Interactúa con el [AhorroRepository] para crear el plan y sus miembros.
+ * - Expone un flujo de estado [createState] que indica el estado de la operación.
  */
 class CreatePlanViewModel(
     private val repository: AhorroRepository = AhorroRepository()
 ) : ViewModel() {
 
+    // Estado interno mutable
     private val _createState = MutableStateFlow<CreatePlanState>(CreatePlanState.Idle)
+
+    /**
+     * Estado público de creación de plan.
+     * Puede ser Idle, Loading, Success o Error.
+     */
     val createState: StateFlow<CreatePlanState> = _createState.asStateFlow()
 
+    /**
+     * Crea un nuevo plan con los datos proporcionados y los miembros asociados.
+     *
+     * @param name Nombre del plan
+     * @param motive Motivo del plan
+     * @param targetAmount Monto objetivo a alcanzar
+     * @param months Duración del plan en meses
+     * @param members Lista de miembros a asociar al plan
+     */
     fun createPlan(
         name: String,
         motive: String,
@@ -30,7 +48,7 @@ class CreatePlanViewModel(
         viewModelScope.launch {
             _createState.value = CreatePlanState.Loading
 
-            // Validaciones
+            // ===== Validaciones de datos =====
             if (name.isBlank()) {
                 _createState.value = CreatePlanState.Error("El nombre no puede estar vacío")
                 return@launch
@@ -48,10 +66,10 @@ class CreatePlanViewModel(
                 return@launch
             }
 
-            // Crear plan
+            // ===== Crear plan en el repositorio =====
             repository.createPlan(name, motive, targetAmount, months)
                 .onSuccess { plan ->
-                    // Crear miembros para ese plan
+                    // Crear miembros asociados
                     var allMembersCreated = true
                     members.forEach { memberInput ->
                         val result = repository.createMember(
@@ -64,6 +82,7 @@ class CreatePlanViewModel(
                         }
                     }
 
+                    // Actualizar estado según resultados
                     if (allMembersCreated) {
                         _createState.value = CreatePlanState.Success
                     } else {
@@ -78,14 +97,28 @@ class CreatePlanViewModel(
         }
     }
 
+    /**
+     * Reinicia el estado del flujo a [CreatePlanState.Idle].
+     * Útil después de mostrar mensajes de éxito o error.
+     */
     fun resetState() {
         _createState.value = CreatePlanState.Idle
     }
 }
 
+/**
+ * Estados posibles de la operación de creación de un plan.
+ */
 sealed class CreatePlanState {
+    /** Estado inicial, sin acciones. */
     object Idle : CreatePlanState()
+
+    /** Operación en progreso. */
     object Loading : CreatePlanState()
+
+    /** Operación completada con éxito. */
     object Success : CreatePlanState()
+
+    /** Ocurrió un error, con mensaje descriptivo. */
     data class Error(val message: String) : CreatePlanState()
 }

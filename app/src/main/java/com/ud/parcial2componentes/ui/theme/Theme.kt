@@ -7,14 +7,21 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-// Colores personalizados para el tema
-val PrimaryPurple = Color(0xFF9B7EE8)      // Morado principal
-val SecondaryPurple = Color(0xFFB39DDB)    // Morado claro
-val BackgroundLight = Color(0xFFF8F7FF)    // Fondo blanco-lila
-val CardBackground = Color(0xFFFFFFFF)     // Blanco puro para cards
-val AccentGreen = Color(0xFF4CAF50)        // Verde para estados positivos
-val AccentBlue = Color(0xFF2196F3)         // Azul para información
+// =======================
+// Colores personalizados
+// =======================
+val PrimaryPurple = Color(0xFF9B7EE8)      // Morado principal, usado para botones, encabezados
+val SecondaryPurple = Color(0xFFB39DDB)    // Morado claro, para elementos secundarios
+val BackgroundLight = Color(0xFFF8F7FF)    // Fondo de pantalla en tema claro
+val CardBackground = Color(0xFFFFFFFF)     // Color de fondo de cards
+val AccentGreen = Color(0xFF4CAF50)        // Verde para estados positivos o confirmaciones
+val AccentBlue = Color(0xFF2196F3)         // Azul para información o acciones destacadas
 
+// =======================
+// Esquemas de color
+// =======================
+
+// Tema claro
 private val LightColorScheme = lightColorScheme(
     primary = PrimaryPurple,
     onPrimary = Color.White,
@@ -26,7 +33,7 @@ private val LightColorScheme = lightColorScheme(
     secondaryContainer = Color(0xFFE8DEF8),
     onSecondaryContainer = Color(0xFF1D192B),
 
-    tertiary = Color(0xFF7D5260),  // ← Usa el color directamente aquí
+    tertiary = Color(0xFF7D5260),
     onTertiary = Color.White,
     tertiaryContainer = Color(0xFFFFD8E4),
     onTertiaryContainer = Color(0xFF31111D),
@@ -47,18 +54,19 @@ private val LightColorScheme = lightColorScheme(
     outline = Color(0xFF79747E),
 )
 
+// Tema oscuro
 private val DarkColorScheme = darkColorScheme(
-    primary = Color(0xFFD0BCFF),  // ← Usa el color directamente
+    primary = Color(0xFFD0BCFF),
     onPrimary = Color(0xFF381E72),
     primaryContainer = Color(0xFF4F378B),
     onPrimaryContainer = Color(0xFFEADDFF),
 
-    secondary = Color(0xFFCCC2DC),  // ← Usa el color directamente
+    secondary = Color(0xFFCCC2DC),
     onSecondary = Color(0xFF332D41),
     secondaryContainer = Color(0xFF4A4458),
     onSecondaryContainer = Color(0xFFE8DEF8),
 
-    tertiary = Color(0xFFEFB8C8),  // ← Usa el color directamente
+    tertiary = Color(0xFFEFB8C8),
     onTertiary = Color(0xFF492532),
     tertiaryContainer = Color(0xFF633B48),
     onTertiaryContainer = Color(0xFFFFD8E4),
@@ -79,6 +87,16 @@ private val DarkColorScheme = darkColorScheme(
     outline = Color(0xFF938F99),
 )
 
+// =======================
+// Composable de tema
+// =======================
+/**
+ * Tema principal de la aplicación.
+ * Detecta si el sistema está en modo oscuro y aplica el esquema correspondiente.
+ *
+ * @param darkTheme Determina si se usa tema oscuro (por defecto se detecta del sistema)
+ * @param content Composable que será envuelto en el tema
+ */
 @Composable
 fun Parcial2ComponentesTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

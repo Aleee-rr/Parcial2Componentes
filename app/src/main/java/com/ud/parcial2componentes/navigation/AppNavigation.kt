@@ -10,9 +10,20 @@ import androidx.navigation.navArgument
 import com.ud.parcial2componentes.ui.screens.*
 
 /**
- * Sistema de navegación de la aplicación.
- * Define todas las rutas y transiciones entre pantallas.
- */
+* Este archivo implementa el sistema completo de navegación de la aplicación usando Jetpack Compose Navigation,
+* definiendo cómo el usuario se desplaza entre las distintas pantallas y cómo se pasan los datos entre ellas.
+* La función AppNavigation crea un NavHost con un NavController y establece la pantalla de inicio como la lista de planes;
+* dentro del NavHost, cada pantalla se registra mediante composable, indicando su ruta y las acciones que permiten
+* navegar a otras vistas. La pantalla de lista de planes permite ir al detalle de un plan o a la creación de uno nuevo;
+* la pantalla de creación de plan regresa automáticamente cuando se guarda un nuevo plan; la pantalla de detalle recibe
+* un planId como parámetro para mostrar la información correspondiente y permite navegar al registro de pagos; la pantalla
+* de registrar pago también recibe un ID y vuelve atrás cuando se completa el registro; finalmente, la pantalla de lista
+* de pagos muestra todos los pagos asociados a un plan específico. La sealed class Screen organiza todas las rutas de navegación,
+* algunas con argumentos dinámicos, y ofrece métodos auxiliares para construir rutas válidas sin errores. En conjunto, este
+* archivo centraliza toda la estructura de navegación de la aplicación, define las rutas, los parámetros que deben enviarse
+* y las transiciones que cada pantalla permite, garantizando un flujo de navegación seguro, ordenado y coherente.
+*/
+
 @Composable
 fun AppNavigation(
     navController: NavHostController = rememberNavController()

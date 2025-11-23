@@ -19,8 +19,29 @@ import com.ud.parcial2componentes.viewmodel.PaymentsViewModel
 import com.ud.parcial2componentes.viewmodel.RegisterPaymentState
 
 /**
- * Pantalla mejorada para registrar un nuevo pago.
- * Permite seleccionar el miembro de una lista desplegable.
+ * Pantalla para registrar un nuevo pago dentro de un plan de ahorro específico.
+ *
+ * Muestra un formulario moderno que permite:
+ * - Seleccionar un miembro del plan desde un dropdown (`ExposedDropdownMenuBox`).
+ * - Ingresar el monto del pago.
+ * - Visualizar información detallada del miembro seleccionado.
+ * - Registrar el pago mediante el `PaymentsViewModel`.
+ *
+ * Maneja distintos estados:
+ * - `PlanDetailUiState.Loading`: muestra un `CircularProgressIndicator` mientras se cargan los miembros.
+ * - `PlanDetailUiState.Success`: muestra el contenido de registro con los miembros disponibles.
+ * - `PlanDetailUiState.Error`: muestra un mensaje de error y opción para reintentar la carga.
+ *
+ * Además, escucha el estado de registro de pago (`RegisterPaymentState`) para:
+ * - Mostrar un indicador de carga mientras se registra.
+ * - Mostrar errores de validación o del servidor.
+ * - Ejecutar `onPaymentSuccess()` al registrar correctamente un pago.
+ *
+ * @param planId ID del plan para el cual se registra el pago.
+ * @param onNavigateBack Callback al presionar el botón de volver.
+ * @param onPaymentSuccess Callback que se ejecuta cuando el pago se registra correctamente.
+ * @param planDetailViewModel ViewModel encargado de cargar detalles del plan y sus miembros.
+ * @param paymentsViewModel ViewModel encargado de registrar pagos.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
