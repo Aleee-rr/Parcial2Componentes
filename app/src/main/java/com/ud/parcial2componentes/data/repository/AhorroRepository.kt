@@ -1,5 +1,6 @@
 package com.ud.parcial2componentes.data.repository
 
+import android.util.Log
 import com.ud.parcial2componentes.data.model.CreateMemberRequest
 import com.ud.parcial2componentes.data.model.CreatePlanRequest
 import com.ud.parcial2componentes.data.model.Member

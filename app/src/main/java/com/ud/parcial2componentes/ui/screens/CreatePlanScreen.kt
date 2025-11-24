@@ -3,10 +3,10 @@ package com.ud.parcial2componentes.ui.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -22,19 +22,8 @@ import com.ud.parcial2componentes.viewmodel.CreatePlanViewModel
 /**
  * Esta pantalla permite crear un nuevo plan de ahorro dentro de la aplicación.
  * El usuario puede ingresar información básica del plan como nombre, motivo, meta de ahorro y duración en meses,
- * además de agregar miembros que participarán en el plan y sus aportes mensuales. La pantalla utiliza un Scaffold
- * con un TopAppBar que incluye un botón de retroceso y un FloatingActionButton para agregar miembros. Los campos
- * del plan se muestran con OutlinedTextField, validando que los valores no estén vacíos y que los números sean
- * correctos. Los miembros se manejan mediante una lista dinámica y se muestran en tarjetas (MemberInputCard),
- * donde cada miembro puede ser eliminado. Si no hay miembros agregados, se muestra un mensaje informativo.
- * La creación del plan se realiza mediante un botón que llama al ViewModel (CreatePlanViewModel) para persistir
- * los datos; mientras se procesa la creación, se muestra un indicador de carga. La pantalla también maneja estados
- * de error mostrando un Card con el mensaje correspondiente. Para agregar un miembro, se despliega un dialogo
- * (AddMemberDialog) donde se ingresan nombre y aporte mensual; al confirmar, se agrega a la lista de miembros.
- * En conjunto, este Composable centraliza la captura de toda la información necesaria para crear un plan y su
- * interacción con los miembros, integrándose con el ViewModel para manejar el estado y la lógica de negocio.
+ * además de agregar miembros que participarán en el plan y sus aportes mensuales.
  */
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreatePlanScreen(
@@ -58,15 +47,15 @@ fun CreatePlanScreen(
     // Manejar éxito
     LaunchedEffect(createState) {
         if (createState is CreatePlanState.Success) {
-            onPlanCreated()
             viewModel.resetState()
+            onPlanCreated()
         }
     }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Crear Nuevo Plan") },
+                title = { Text("Crear Nuevo Plan", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
@@ -81,14 +70,8 @@ fun CreatePlanScreen(
                     navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { showAddMemberDialog = true }
-            ) {
-                Icon(Icons.Default.Add, contentDescription = "Agregar Miembro")
-            }
         }
+        // ← ELIMINADO floatingActionButton
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
@@ -156,13 +139,27 @@ fun CreatePlanScreen(
             // Sección de miembros
             item {
                 Spacer(modifier = Modifier.height(8.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                Text(
+                    text = "Miembros del Plan (${members.size})",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            // ✅ NUEVO: Botón para agregar miembro
+            item {
+                Button(
+                    onClick = { showAddMemberDialog = true },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary
+                    )
                 ) {
                     Text(
-                        text = "Miembros del Plan (${members.size})",
+                        "Crear Miembro",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -178,7 +175,7 @@ fun CreatePlanScreen(
                         )
                     ) {
                         Text(
-                            text = "No hay miembros agregados.\nToca el botón + para agregar.",
+                            text = "No hay miembros agregados.\nPresiona 'Crear Miembro' para agregar.",
                             modifier = Modifier.padding(16.dp),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -214,7 +211,7 @@ fun CreatePlanScreen(
                 }
             }
 
-            // Botón crear
+            // Botón crear plan
             item {
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(
@@ -227,7 +224,10 @@ fun CreatePlanScreen(
                             members = members
                         )
                     },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    shape = RoundedCornerShape(16.dp),
                     enabled = createState !is CreatePlanState.Loading &&
                             planName.isNotBlank() &&
                             planMotive.isNotBlank() &&
@@ -241,7 +241,11 @@ fun CreatePlanScreen(
                             color = MaterialTheme.colorScheme.onPrimary
                         )
                     } else {
-                        Text("Crear Plan", style = MaterialTheme.typography.titleMedium)
+                        Text(
+                            "Crear Plan",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                 }
             }
@@ -269,7 +273,8 @@ fun MemberInputCard(
     onDelete: () -> Unit
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp)
     ) {
         Row(
             modifier = Modifier

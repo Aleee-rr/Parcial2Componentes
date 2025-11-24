@@ -74,21 +74,8 @@ fun PlansListScreen(
                     titleContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = onCreatePlan,
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-                shape = CircleShape
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Crear Plan",
-                    modifier = Modifier.size(28.dp)
-                )
-            }
         }
+
     ) { paddingValues ->
         Box(
             modifier = Modifier
@@ -114,7 +101,7 @@ fun PlansListScreen(
                     ModernPlansList(
                         plans = state.plans,
                         onPlanClick = onPlanClick,
-                        onRefresh = { viewModel.loadPlans() }
+                        onCreatePlan = onCreatePlan
                     )
                 }
                 is PlansUiState.Error -> {
@@ -133,24 +120,30 @@ fun PlansListScreen(
 fun ModernPlansList(
     plans: List<Plan>,
     onPlanClick: (String) -> Unit,
-    onRefresh: () -> Unit
+    onCreatePlan: () -> Unit  //NUEVO PARÁMETRO
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        // Botón de crear plan
         item {
-            // Botón de refrescar con estilo moderno
-            OutlinedButton(
-                onClick = onRefresh,
-                modifier = Modifier.fillMaxWidth(),
+            Button(
+                onClick = onCreatePlan,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
                 shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = MaterialTheme.colorScheme.primary
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
                 )
             ) {
-                Text("🔄 Actualizar Planes", fontWeight = FontWeight.SemiBold)
+                Text(
+                    "Crear Plan",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
 

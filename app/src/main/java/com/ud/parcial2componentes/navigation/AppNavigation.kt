@@ -1,6 +1,7 @@
 package com.ud.parcial2componentes.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -8,21 +9,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.ud.parcial2componentes.ui.screens.*
+import com.ud.parcial2componentes.viewmodel.PlansViewModel
 
 /**
-* Este archivo implementa el sistema completo de navegación de la aplicación usando Jetpack Compose Navigation,
-* definiendo cómo el usuario se desplaza entre las distintas pantallas y cómo se pasan los datos entre ellas.
-* La función AppNavigation crea un NavHost con un NavController y establece la pantalla de inicio como la lista de planes;
-* dentro del NavHost, cada pantalla se registra mediante composable, indicando su ruta y las acciones que permiten
-* navegar a otras vistas. La pantalla de lista de planes permite ir al detalle de un plan o a la creación de uno nuevo;
-* la pantalla de creación de plan regresa automáticamente cuando se guarda un nuevo plan; la pantalla de detalle recibe
-* un planId como parámetro para mostrar la información correspondiente y permite navegar al registro de pagos; la pantalla
-* de registrar pago también recibe un ID y vuelve atrás cuando se completa el registro; finalmente, la pantalla de lista
-* de pagos muestra todos los pagos asociados a un plan específico. La sealed class Screen organiza todas las rutas de navegación,
-* algunas con argumentos dinámicos, y ofrece métodos auxiliares para construir rutas válidas sin errores. En conjunto, este
-* archivo centraliza toda la estructura de navegación de la aplicación, define las rutas, los parámetros que deben enviarse
-* y las transiciones que cada pantalla permite, garantizando un flujo de navegación seguro, ordenado y coherente.
-*/
+ * Este archivo implementa el sistema completo de navegación de la aplicación usando Jetpack Compose Navigation,
+ * definiendo cómo el usuario se desplaza entre las distintas pantallas y cómo se pasan los datos entre ellas.
+ * La función AppNavigation crea un NavHost con un NavController y establece la pantalla de inicio como la lista de planes;
+ * dentro del NavHost, cada pantalla se registra mediante composable, indicando su ruta y las acciones que permiten
+ * navegar a otras vistas. Ahora incluye actualización automática de la lista de planes al regresar de crear uno.
+ */
 
 @Composable
 fun AppNavigation(
@@ -33,22 +28,43 @@ fun AppNavigation(
         startDestination = Screen.PlansList.route
     ) {
         // Pantalla principal: Lista de planes
-        composable(Screen.PlansList.route) {
+        composable(Screen.PlansList.route) { backStackEntry ->
+            // CAMBIO A: Crear ViewModel una sola vez para esta pantalla
+            val viewModel: PlansViewModel = viewModel()
+
+            // CAMBIO A: Escuchar cuando volvemos a esta pantalla
+            val currentBackStackEntry = navController.currentBackStackEntry
+            val savedStateHandle = currentBackStackEntry?.savedStateHandle
+
+            // Observar cambio desde CreatePlan
+            savedStateHandle?.getLiveData<Boolean>("plan_created")?.observe(backStackEntry) { created ->
+                if (created == true) {
+                    viewModel.loadPlans()  // Recargar lista
+                    savedStateHandle.remove<Boolean>("plan_created")  // Limpiar flag
+                }
+            }
+
             PlansListScreen(
+                viewModel = viewModel,
                 onPlanClick = { planId ->
                     navController.navigate(Screen.PlanDetail.createRoute(planId))
                 },
-                onCreatePlan = {  // ← NUEVO
+                onCreatePlan = {
                     navController.navigate(Screen.CreatePlan.route)
                 }
             )
         }
 
-        // ← NUEVA PANTALLA: Crear plan
+        // Pantalla: Crear plan
         composable(Screen.CreatePlan.route) {
             CreatePlanScreen(
                 onNavigateBack = { navController.popBackStack() },
                 onPlanCreated = {
+                    // CAMBIO A: Marcar que se creo un plan antes de volver
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set("plan_created", true)
+
                     navController.popBackStack()
                 }
             )
@@ -109,7 +125,7 @@ fun AppNavigation(
  */
 sealed class Screen(val route: String) {
     object PlansList : Screen("plans_list")
-    object CreatePlan : Screen("create_plan")  // ← NUEVA RUTA
+    object CreatePlan : Screen("create_plan")
 
     object PlanDetail : Screen("plan_detail/{planId}") {
         fun createRoute(planId: String) = "plan_detail/$planId"
